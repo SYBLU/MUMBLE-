@@ -1,4 +1,3 @@
-
 let messagesContainer = document.getElementById('messages');
 messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
@@ -9,69 +8,38 @@ const chatContainer = document.getElementById('messages__container');
 const chatButton = document.getElementById('chat__button');
 
 let activeMemberContainer = false;
+let activeChatContainer = false;
+
+const toggleDisplay = (element, isActive) => {
+  element.style.display = isActive ? 'none' : 'block';
+};
 
 memberButton.addEventListener('click', () => {
-  if (activeMemberContainer) {
-    memberContainer.style.display = 'none';
-  } else {
-    memberContainer.style.display = 'block';
-  }
-
+  toggleDisplay(memberContainer, activeMemberContainer);
   activeMemberContainer = !activeMemberContainer;
 });
 
-let activeChatContainer = false;
-
 chatButton.addEventListener('click', () => {
-  if (activeChatContainer) {
-    chatContainer.style.display = 'none';
-  } else {
-    chatContainer.style.display = 'block';
-  }
-
+  toggleDisplay(chatContainer, activeChatContainer);
   activeChatContainer = !activeChatContainer;
 });
 
-let displayFrame = document.getElementById('stream__box')
-let videoFrames = document.getElementsByClassName('video__container')
+let displayFrame = document.getElementById('stream__box');
+let videoFrames = document.getElementsByClassName('video__container');
 let userIdInDisplayFrame = null;
 
 let expandVideoFrame = (e) => {
-
-  let child = displayFrame.children[0]
-  if(child){
-      document.getElementById('streams__container').appendChild(child)
+  let child = displayFrame.children[0];
+  if (child) {
+    document.getElementById('streams__container').appendChild(child);
   }
 
-  displayFrame.style.display = 'block'
-  displayFrame.appendChild(e.currentTarget)
-  userIdInDisplayFrame = e.currentTarget.id
+  displayFrame.style.display = 'block';
+  displayFrame.appendChild(e.currentTarget);
+  userIdInDisplayFrame = e.currentTarget.id;
+};
 
-  for(let i = 0; videoFrames.length > i; i++){
-    if(videoFrames[i].id != userIdInDisplayFrame){
-      videoFrames[i].style.height = '100px'
-      videoFrames[i].style.width = '100px'
-    }
-  }
-
+// Add event listeners to video frames to call expandVideoFrame
+for (let i = 0; i < videoFrames.length; i++) {
+  videoFrames[i].addEventListener('click', expandVideoFrame);
 }
-
-for(let i = 0; videoFrames.length > i; i++){
-  videoFrames[i].addEventListener('click', expandVideoFrame)
-}
-
-
-let hideDisplayFrame = () => {
-    userIdInDisplayFrame = null
-    displayFrame.style.display = null
-
-    let child = displayFrame.children[0]
-    document.getElementById('streams__container').appendChild(child)
-
-    for(let i = 0; videoFrames.length > i; i++){
-      videoFrames[i].style.height = '300px'
-      videoFrames[i].style.width = '300px'
-  }
-}
-
-displayFrame.addEventListener('click', hideDisplayFrame)
